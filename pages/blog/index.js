@@ -9,33 +9,31 @@ import { getPlaiceholder } from 'plaiceholder'
 import { eyecatchLocal } from 'lib/constants'
 
 export default function Blog({ posts }) {
-	return (
-		<Container>
-		<Meta pageTitle="ブログ" pageDesc="ブログの記事一覧" />
-		<Hero 
-		title="Blog"
-		subtitle="React Posts"
-		/>
+  return (
+    <Container>
+      <Meta pageTitle="ブログ" pageDesc="ブログの記事一覧" />
 
-		<Posts posts={posts} />
-		</Container>
-	)
+      <Hero title="Blog" subtitle="Recent Posts" />
+
+      <Posts posts={posts} />
+    </Container>
+  )
 }
 
 export async function getStaticProps() {
-	const posts = await getAllPosts()
-	
-	for (const post of posts) {
-		if (!post.hasOwnProperty('eyecatch')) {
-			post.eyecatch = eyecatchLocal
-		}
-		const { base64 } = await getPlaiceholder(post.eyecatch.url)
-		post.eyecatch.blurDataURL = base64
-	}
+  const posts = await getAllPosts()
 
-	return {
-		props: {
-			posts: posts,
-		},
-	}
+  for (const post of posts) {
+    if (!post.hasOwnProperty('eyecatch')) {
+      post.eyecatch = eyecatchLocal
+    }
+    const { base64 } = await getPlaiceholder(post.eyecatch.url)
+    post.eyecatch.blurDataURL = base64
+  }
+
+  return {
+    props: {
+      posts: posts,
+    },
+  }
 }
